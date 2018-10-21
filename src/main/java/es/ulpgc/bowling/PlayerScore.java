@@ -12,13 +12,18 @@ public class PlayerScore {
 
     public List<Frame> frames() {
         List<Frame> frames = new ArrayList<>();
-        for (int i = 0; i < rolls.size();) {
-            Frame frame = new Frame(i);
-            frames.add(frame);
-            if (frames.size() == 10) break;
-            i += frame.isStrike() ? 1: 2;
+        for (int i = 0; i < rolls.size() && frames.size() < 10; i += nextFramePosition(frames)) {
+            frames.add(new Frame(i));
         }
         return frames;
+    }
+
+    private int nextFramePosition(List<Frame> frames) {
+        return lastFrame(frames).isStrike() ? 1 : 2;
+    }
+
+    private Frame lastFrame(List<Frame> frames){
+        return frames.get(frames.size() - 1);
     }
 
     public PlayerScore roll(int pins) {
